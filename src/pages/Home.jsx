@@ -84,7 +84,7 @@ const Home = () => {
 
     fetchRecipes();
   }, []);
-
+  console.log("hello");
   return (
     <Box sx={{
       minHeight: '100vh',
