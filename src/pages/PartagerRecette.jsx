@@ -1,48 +1,22 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer, TextField, Button } from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Drawer } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { getCurrentUser } from '../services/auth';
-import { partagerRecette, getRecettesPartagees } from '../services/partages';
 
 export default function PartagerRecette() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [recetteId, setRecetteId] = useState('');
-  const [receiverId, setReceiverId] = useState('');
-  const [recettesPartagees, setRecettesPartagees] = useState([]);
   const navigate = useNavigate();
-  const user = getCurrentUser();
-
-  useEffect(() => {
-    const fetchRecettesPartagees = async () => {
-      if (user) {
-        const data = await getRecettesPartagees(user.id);
-        setRecettesPartagees(data);
-      }
-    };
-
-    fetchRecettesPartagees();
-  }, [user]);
 
   const handleNavigation = (path) => {
     navigate(path);
     setDrawerOpen(false);
-  };
-
-  const handlePartage = async () => {
-    if (recetteId && receiverId && user) {
-      await partagerRecette(recetteId, user.id, receiverId);
-      alert('Recette partagée avec succès');
-      setRecetteId('');
-      setReceiverId('');
-    }
   };
 
   const DrawerList = (
@@ -90,33 +64,6 @@ export default function PartagerRecette() {
             </Typography>
           </Toolbar>
         </AppBar>
-
-        <Box sx={{ p: 3 }}>
-          <h1>Partager une Recette</h1>
-          <TextField
-            label="ID de la Recette"
-            value={recetteId}
-            onChange={(e) => setRecetteId(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="ID du Destinataire"
-            value={receiverId}
-            onChange={(e) => setReceiverId(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" color="primary" onClick={handlePartage}>
-            Partager
-          </Button>
-          <h2>Recettes Partagées avec Moi</h2>
-          <ul>
-            {recettesPartagees.map((recette) => (
-              <li key={recette.id}>{recette.nom}</li>
-            ))}
-          </ul>
-        </Box>
 
         <Drawer
           anchor="left"

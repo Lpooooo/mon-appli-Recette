@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 
 const SearchBar = ({ onSearch }) => {
+  const searchInputRef = useRef(null);
+
   const handleSearch = (event) => {
     event.preventDefault();
-    const letter = event.target.elements.search.value;
-    onSearch(letter);
+    const term = searchInputRef.current.value;
+    onSearch(term);
   };
 
   return (
     <Box component="form" onSubmit={handleSearch} sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
       <TextField
         id="search"
-        label="Rechercher par lettre"
+        label="Rechercher votre recette"
         variant="outlined"
         size="small"
+        inputRef={searchInputRef}
         sx={{ mr: 2 }}
       />
       <Button type="submit" variant="contained" color="primary">
         Rechercher
       </Button>
-      </Box>
-      
+    </Box>
   );
 };
 

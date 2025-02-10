@@ -81,7 +81,7 @@ const MesEnregistrements = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={{ fontSize: 15 }} variant="h6" color="inherit" component="div">
+          <Typography sx={{ fontSize: 25 }} variant="h6" color="inherit" component="div">
             Mes Enregistrements
           </Typography>
         </Toolbar>

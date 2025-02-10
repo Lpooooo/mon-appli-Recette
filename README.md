@@ -15,7 +15,15 @@ Une application web pour gérer et partager des recettes de cuisine. Les utilisa
 
 ## Installation
 
-1. Clonez le dépôt GitHub :
+1. Connection à la Base de données MariaDB via le Terminal:
+
+-node backend/server.js
+
+2. Lancer le Projet recette de cuisine
+
+-npm start
+
+3. Clonez le dépôt GitHub :
 
 ```sh
 git clone https://github.com/votre-nom-utilisateur/recette-cuisine.git

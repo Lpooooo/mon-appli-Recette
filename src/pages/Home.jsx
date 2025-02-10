@@ -16,30 +16,37 @@ import AppBarWithDrawer from '../pages/AppBarWithDrawer';
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [meals, setMeals] = useState([]);
-  const [searchLetter, setSearchLetter] = useState('a');
+  const [searchTerm, setSearchTerm] = useState('a');
   const [ratings, setRatings] = useState({});
   const [comments, setComments] = useState({});
   const [savedMeals, setSavedMeals] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const fetchMeals = async (letter) => {
+  const fetchMeals = async (term) => {
     try {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`);
+      let url;
+      if (term.length === 1) {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`;
+      } else {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
       setMeals(data.meals);
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
+      setErrorMessage('Erreur lors de la récupération des données');
     }
   };
 
   useEffect(() => {
-    fetchMeals(searchLetter);
+    fetchMeals(searchTerm);
     const savedMealsFromStorage = JSON.parse(localStorage.getItem('savedMeals')) || [];
     setSavedMeals(savedMealsFromStorage);
-  }, [searchLetter]);
+  }, [searchTerm]);
 
-  const handleSearch = (letter) => {
-    setSearchLetter(letter);
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
 
   const handleRatingChange = (mealId, newRating) => {
@@ -75,7 +82,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:3030/api/recipes'); // Assurez-vous que l'URL de l'API est correcte
+        const response = await axios.get('http://localhost:5000/api/recipes'); // Assurez-vous que l'URL de l'API est correcte
         setRecipes(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des recettes:', error);
@@ -84,7 +91,7 @@ const Home = () => {
 
     fetchRecipes();
   }, []);
-  console.log("hello");
+
   return (
     <Box sx={{
       minHeight: '100vh',
@@ -96,10 +103,8 @@ const Home = () => {
     }}>
       <AppBarWithDrawer />
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-        
-        </Typography>
-        <SearchBar onSearch={handleSearch} />
+     
+       <SearchBar onSearch={handleSearch} />
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <Grid container spacing={3}>
           {meals && meals.map((meal) => (
