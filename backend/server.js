@@ -5,6 +5,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const sha256 = require('js-sha256').sha256;
+const ratingsRoutes = require('./routes/ratings');
+const recipesRoutes = require('./routes/recette');
+
 dotenv.config();
 
 
@@ -155,6 +158,10 @@ app.get('/api/user/profile', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur' });
   }
 });
+
+app.use('/api/ratings', ratingsRoutes);
+
+app.use('/api/recette', recipesRoutes);
 
 const PORT = 3030;
 app.listen(PORT, () => {

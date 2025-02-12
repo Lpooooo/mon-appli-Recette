@@ -45,8 +45,8 @@ function Authentification() {
         </Toolbar>
       </AppBar>
       <Box component="form" onSubmit={handleSignIn} sx={{ mt: 3, mx: 'auto', maxWidth: 400, p: 2, borderRadius: 1, boxShadow: 3 }}>
-        <Typography variant="h5" component="h1" gutterBottom>
-          Connexion
+        <Typography variant="h5" component="h1" gutterBottom textAlign="center"> 
+        Connectez-vous
         </Typography>
         <TextField
           fullWidth

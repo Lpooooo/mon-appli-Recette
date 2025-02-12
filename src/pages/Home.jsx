@@ -13,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import SearchBar from '../Components/SearchBar';
 import AppBarWithDrawer from '../pages/AppBarWithDrawer';
 
+
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [meals, setMeals] = useState([]);
@@ -49,11 +50,17 @@ const Home = () => {
     setSearchTerm(term);
   };
 
-  const handleRatingChange = (mealId, newRating) => {
+  const handleRatingChange = async (mealId, newRating) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [mealId]: newRating,
     }));
+
+    try {
+      await axios.post('http://localhost:5000/api/ratings', { mealId, rating: newRating });
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement de la note:', error);
+    }
   };
 
   const handleCommentChange = (mealId, newComment) => {
@@ -103,8 +110,10 @@ const Home = () => {
     }}>
       <AppBarWithDrawer />
       <Box sx={{ p: 3 }}>
-     
-       <SearchBar onSearch={handleSearch} />
+        <Typography variant="h4" component="h1" gutterBottom>
+         Votre Navigation
+        </Typography>
+        <SearchBar onSearch={handleSearch} />
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <Grid container spacing={3}>
           {meals && meals.map((meal) => (
