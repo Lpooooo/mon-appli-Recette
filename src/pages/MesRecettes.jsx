@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getRecettes } from '../services/recettes';
 
 function MesRecettes() {
@@ -21,6 +21,12 @@ function MesRecettes() {
       setLoading(false);
     }
   };
+
+
+  useEffect(() => {
+    // Récupérer les recettes de l'utilisateur connecté au chargement du composant
+    handleSearch();
+  }, []);
 
   return (
     <div>

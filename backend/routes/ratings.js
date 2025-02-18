@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
   const { mealId, userId, rating } = req.body;
   try {
     const [result] = await pool.query(
-      'INSERT INTO ratings (meal_id, user_id, rating) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE rating = ?',
+      'INSERT INTO Ratings (meal_id, user_id, rating) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE rating = ?',
       [mealId, userId, rating, rating]
     );
     res.status(201).json({ id: result.insertId, mealId, userId, rating });

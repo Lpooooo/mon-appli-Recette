@@ -15,7 +15,7 @@ import AppBarWithDrawer from '../pages/AppBarWithDrawer';
 
 
 const Home = () => {
-  const [recipes, setRecipes] = useState([]);
+  const [recette, setRecette] = useState([]);
   const [meals, setMeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('a');
   const [ratings, setRatings] = useState({});
@@ -87,16 +87,16 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const fetchRecipes = async () => {
+    const fetchrecette = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/recipes'); // Assurez-vous que l'URL de l'API est correcte
-        setRecipes(response.data);
+        const response = await axios.get('http://localhost:3031/api/recette'); // Assurez-vous que l'URL de l'API est correcte
+        setRecette(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des recettes:', error);
       }
     };
 
-    fetchRecipes();
+    fetchrecette();
   }, []);
 
   return (
@@ -109,10 +109,7 @@ const Home = () => {
       backgroundAttachment: 'fixed'
     }}>
       <AppBarWithDrawer />
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-         Votre Navigation
-        </Typography>
+      <Box sx={{ p: 10 }} >
         <SearchBar onSearch={handleSearch} />
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <Grid container spacing={3}>

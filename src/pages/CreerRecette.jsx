@@ -25,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Drawer from '@mui/material/Drawer';
+import axios from 'axios';
 
 function RecetteForm({ open, onClose }) {
   const [title, setTitle] = useState('');
@@ -38,30 +39,65 @@ function RecetteForm({ open, onClose }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhoto(reader.result);
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const maxWidth = 800; // Définissez la largeur maximale
+          const maxHeight = 800; // Définissez la hauteur maximale
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+          setPhoto(canvas.toDataURL('image/jpeg'));
+        };
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!title || !ingredients || !instructions || !photo) {
-      setMessage('Tous les champs sont obligatoires.');
-      return;
-    }
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (!title || !ingredients || !instructions || !photo) {
+    setMessage('Tous les champs sont obligatoires.');
+    return;
+  }
 
-    const newRecipe = {
-      idMeal: Date.now().toString(),
-      strMeal: title,
-      strIngredients: ingredients,
-      strInstructions: instructions,
-      strMealThumb: photo,
-    };
+  const token = localStorage.getItem('token'); // Récupérer le token stocké
+  if (!token) {
+    setMessage('Vous devez être connecté pour créer une recette.');
+    return;
+  }
 
-    const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
-    savedRecipes.push(newRecipe);
-    localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
+  const newRecette = {
+    title,
+    ingredients,
+    instructions,
+    photo,
+  };
+
+  try {
+    await axios.post('http://localhost:3031/api/recette', newRecette, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
     
     setMessage('Recette créée avec succès');
     setTitle('');
@@ -69,7 +105,15 @@ function RecetteForm({ open, onClose }) {
     setInstructions('');
     setPhoto('');
     onClose();
-  };
+  } catch (error) {
+    if (error.response?.status === 401) {
+      setMessage('Vous devez être connecté pour créer une recette');
+    } else {
+      setMessage('Erreur lors de la création de la recette');
+    }
+    console.error('Erreur lors de la création de la recette:', error);
+  }
+};
 
   return (
     <Dialog open={open} onClose={onClose}>

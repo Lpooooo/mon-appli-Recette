@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from  '../services/auth';
-import { AppBar, Toolbar, Typography, TextField, Button, Box, InputAdornment, IconButton, FormControl, InputLabel, OutlinedInput, Link } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Typography, TextField, Button, Box, InputAdornment, IconButton, FormControl, InputLabel, OutlinedInput, Link } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import axios from 'axios';
 
 function Authentification() {
   const navigate = useNavigate();
@@ -33,19 +31,23 @@ function Authentification() {
   };
 
   return (
-    <div>
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit">
-            Authentification
-          </Typography>
-        </Toolbar>
-      </AppBar>
+    <div
+    style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '16px',
+      backgroundImage: 'url("https://media.istockphoto.com/id/479233129/fr/photo/personnes-dans-un-cours-de-cuisine.jpg?s=612x612&w=0&k=20&c=oCwjYRAgP8RRcFyQhSwfv7arCrHssBEVKLr6gZyxSj0=")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'relative'
+    }}
+  >
+    <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}></div>
+    <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '400px' }}>
       <Box component="form" onSubmit={handleSignIn} sx={{ mt: 3, mx: 'auto', maxWidth: 400, p: 2, borderRadius: 1, boxShadow: 3 }}>
-        <Typography variant="h5" component="h1" gutterBottom textAlign="center"> 
+        <Typography variant="h5" component="h1" gutterBottom textAlign="center" color='Grey'> 
         Connectez-vous
         </Typography>
         <TextField
@@ -107,7 +109,8 @@ function Authentification() {
           Créer un compte
         </Link>
       </Box>
-    </div>
+      </div>
+      </div>
   );
 }
 

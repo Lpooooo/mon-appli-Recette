@@ -19,6 +19,9 @@ const SearchBar = ({ onSearch }) => {
         size="small"
         inputRef={searchInputRef}
         sx={{ mr: 2 }}
+        InputLabelProps={{
+          style: { color: 'white' }, 
+        }}
       />
       <Button type="submit" variant="contained" color="primary">
         Rechercher
