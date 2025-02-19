@@ -42,7 +42,7 @@ export default function PartagerRecette() {
     setSearchTerm(term);
     try {
       const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`);
-      setRecettes(response.data.meals);
+      setRecettes(response.data.meals || []);
     } catch (error) {
       console.error('Erreur lors de la recherche des recettes:', error);
       setErrorMessage('Erreur lors de la recherche des recettes');

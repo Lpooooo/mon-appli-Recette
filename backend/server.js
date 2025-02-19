@@ -93,6 +93,8 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+
+
 //  endpoint
 app.post('/api/auth/register', async (req, res) => {
   try {
@@ -173,6 +175,25 @@ app.get('/api/user/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// Fonction pour afficher les routes définies
+const listRoutes = (app) => {
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) { // Routes définies directement sur l'application
+      console.log(`${middleware.route.stack[0].method.toUpperCase()} ${middleware.route.path}`);
+    } else if (middleware.name === 'router') { // Routes définies sur un routeur
+      middleware.handle.stack.forEach((handler) => {
+        const route = handler.route;
+        if (route) {
+          const methods = Object.keys(route.methods).map(method => method.toUpperCase()).join(', ');
+          console.log(`${methods} ${middleware.regexp}${route.path}`);
+        }
+      });
+    }
+  });
+};
+
+// Afficher les routes définies
+listRoutes(app);
 
 
 const PORT = 3030;

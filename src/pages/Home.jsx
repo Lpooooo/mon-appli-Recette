@@ -89,7 +89,7 @@ const Home = () => {
   useEffect(() => {
     const fetchrecette = async () => {
       try {
-        const response = await axios.get('http://localhost:3031/api/recette'); // Assurez-vous que l'URL de l'API est correcte
+        const response = await axios.get('http://localhost:3030/api/recette'); // Assurez-vous que l'URL de l'API est correcte
         setRecette(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des recettes:', error);

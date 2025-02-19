@@ -2,13 +2,14 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const path = require('path');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
+// Charger les variables d'environnement
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+
+
 
 // Middleware d'authentification amélioré
 const authenticateToken = (req, res, next) => {
@@ -38,7 +39,7 @@ router.post('/', async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      'INSERT INTO Recette (title, ingredients, instructions, photo, user_id) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO recette (title, ingredients, instructions, photo, user_id) VALUES (?, ?, ?, ?, ?)',
       [title, ingredients, instructions, photo, userId]
     );
     
@@ -60,7 +61,7 @@ router.get('/', async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const [recettes] = await pool.query('SELECT * FROM Recette WHERE user_id = ?', [userId]);
+    const [recettes] = await pool.query('SELECT * FROM recette WHERE user_id = ?', [userId]);
     res.status(200).json(recettes);
   } catch (error) {
     console.error('Erreur lors de la récupération des recettes:', error); // Log de l'erreur
