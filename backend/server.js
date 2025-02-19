@@ -195,9 +195,11 @@ const listRoutes = (app) => {
 // Afficher les routes définies
 listRoutes(app);
 
-
-const PORT = 3030;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const port = process.env.PORT
+if (!port) {
+  console.error('Erreur de PORT')
+}
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 

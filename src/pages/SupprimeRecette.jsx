@@ -5,13 +5,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
-
-
 export default function SupprimeRecette() {
   const [recipes, setRecipes] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
     setRecipes(savedRecipes);
@@ -23,7 +21,6 @@ export default function SupprimeRecette() {
     localStorage.setItem('savedRecipes', JSON.stringify(updatedRecipes));
   };
 
-
   const handleNavigation = (path) => {
     navigate(path);
     setDrawerOpen(false);
@@ -33,7 +30,7 @@ export default function SupprimeRecette() {
     <Box sx={{ width: 250 }} role="presentation">
       <List>
         {[
-          { text: 'Accueil', path:'/Home'},
+          { text: 'Accueil', path: '/Home' },
           { text: 'Creer votre recette', path: '/CreerRecette' },
           { text: 'Modifier votre recette', path: '/ModifierRecette' },
         ].map((item, index) => (
@@ -53,7 +50,7 @@ export default function SupprimeRecette() {
   return (
     <Box sx={{
       minHeight: '100vh',
-      backgroundImage: 'url("https://media.istockphoto.com/id/2158116531/fr/photo/comptoir-de-cuisine-avec-ustensiles-et-espace-de-copie-mur-de-briques.jpg?s=2048x2048&w=is&k=20&c=axFyvtqoLNiCANND4PLWbIo2CuibaswN2tkHgnE1vEU=")',
+      backgroundImage: 'url("https://media.gettyimages.com/id/157612198/fr/photo/une-distribution-des-assiettes.jpg?s=1024x1024&w=gi&k=20&c=s-1umUBhADWccKB8jcinOdkJ6YdNbG8FXMXhdnLYuYM=")',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -75,7 +72,7 @@ export default function SupprimeRecette() {
           </Typography>
         </Toolbar>
       </AppBar>
-  
+
       <Drawer
         anchor="left"
         open={drawerOpen}
@@ -84,9 +81,6 @@ export default function SupprimeRecette() {
         {DrawerList}
       </Drawer>
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-         
-        </Typography>
         <Grid container spacing={3}>
           {recipes.map((recipe) => (
             <Grid item xs={12} sm={6} md={4} key={recipe.idMeal}>
@@ -102,7 +96,7 @@ export default function SupprimeRecette() {
                     {recipe.strMeal}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {recipe.strInstructions.substring(0, 100)}...
+                    {recipe.strInstructions ? recipe.strInstructions.substring(0, 100) : ''}...
                   </Typography>
                   <Button
                     variant="contained"

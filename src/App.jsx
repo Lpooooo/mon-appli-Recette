@@ -9,6 +9,7 @@ import CreerRecette from './pages/CreerRecette';
 import ModifierRecette from './pages/ModifierRecette';
 import SupprimeRecette from './pages/SupprimeRecette';
 import Home from "./pages/Home";
+import UserProfile from './pages/UserProfile';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         <Route path="/ModifierRecette" element={<ModifierRecette />} />
         <Route path="/SupprimeRecette" element={<SupprimeRecette />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/UserProfile" element={<UserProfile/>}/>
+      
       </Routes>
     </div>
   );

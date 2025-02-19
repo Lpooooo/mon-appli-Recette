@@ -4,18 +4,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser } from '../services/auth';
-
 
 function AppBarWithDrawer() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ name: '', avatarUrl: '' });
 
   useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
+    const savedUsername = localStorage.getItem('username') || '';
+    const savedAvatarUrl = localStorage.getItem('avatarUrl') || '';
+    setUser({ name: savedUsername, avatarUrl: savedAvatarUrl });
   }, []);
 
   const toggleDrawer = (newOpen) => () => {
@@ -39,7 +38,6 @@ function AppBarWithDrawer() {
     navigate(path);
     setAnchorEl(null);
   };
-
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation">
@@ -80,15 +78,15 @@ function AppBarWithDrawer() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "40px" }}>
             Votre Recette de Cuisine
           </Typography>
-          {user &&(
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h6" component="div" sx={{ marginRight: 1 }}>
-              {user.name}
-            </Typography>
-            <IconButton onClick={handleAvatarClick} color="inherit">
-              <Avatar alt={user.name} src="https://th.bing.com/th/id/OIP.z00idgWgRJ2soaJPNd2nWAHaHa?rs=1&pid=ImgDetMain" sx={{ width: 60, height: 60 }} />
-            </IconButton>
-          </Box>
+          {user && (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="h6" component="div" sx={{ marginRight: 1 }}>
+                {user.name}
+              </Typography>
+              <IconButton onClick={handleAvatarClick} color="inherit">
+                <Avatar alt={user.name} src={user.avatarUrl} sx={{ width: 60, height: 60 }} />
+              </IconButton>
+            </Box>
           )}
           <Menu
             anchorEl={anchorEl}

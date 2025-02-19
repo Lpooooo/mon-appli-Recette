@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
+import {useNavigate} from 'react-router-dom'
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -15,6 +16,7 @@ import AppBarWithDrawer from '../pages/AppBarWithDrawer';
 
 
 const Home = () => {
+  const navigate = useNavigate();
   const [recette, setRecette] = useState([]);
   const [meals, setMeals] = useState([]);
   const [searchTerm, setSearchTerm] = useState('a');
@@ -99,6 +101,10 @@ const Home = () => {
     fetchrecette();
   }, []);
 
+  const handleProfileClick = () => {
+    navigate('/UserProfile');
+  };
+
   return (
     <Box sx={{
       minHeight: '100vh',
@@ -110,7 +116,16 @@ const Home = () => {
     }}>
       <AppBarWithDrawer />
       <Box sx={{ p: 10 }} >
-        <SearchBar onSearch={handleSearch} />
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <SearchBar onSearch={handleSearch} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleProfileClick}
+          >
+            Mon Profil
+          </Button>
+        </Box>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <Grid container spacing={3}>
           {meals && meals.map((meal) => (

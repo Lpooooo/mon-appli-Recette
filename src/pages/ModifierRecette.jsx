@@ -1,26 +1,10 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+import { Box, Typography, Grid, Card, CardMedia, CardContent, TextField, Button, AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import RecipeForm from '../Components/RecipeForm';
 
 export default function ModifierRecette() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -70,7 +54,7 @@ export default function ModifierRecette() {
     <div>
       <Box sx={{
         minHeight: '100vh',
-        backgroundImage: 'url("https://media.istockphoto.com/id/2158116531/fr/photo/comptoir-de-cuisine-avec-ustensiles-et-espace-de-copie-mur-de-briques.jpg?s=2048x2048&w=is&k=20&c=axFyvtqoLNiCANND4PLWbIo2CuibaswN2tkHgnE1vEU=")',
+        backgroundImage: 'url("https://media.gettyimages.com/id/157612198/fr/photo/une-distribution-des-assiettes.jpg?s=1024x1024&w=gi&k=20&c=s-1umUBhADWccKB8jcinOdkJ6YdNbG8FXMXhdnLYuYM=")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -87,8 +71,8 @@ export default function ModifierRecette() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" component="div" fontSize={10}>
-              <h1>Modification de votre recette</h1>
+            <Typography variant="h6" color="inherit" component="div">
+              Modification de votre recette
             </Typography>
           </Toolbar>
         </AppBar>
@@ -101,70 +85,14 @@ export default function ModifierRecette() {
           {DrawerList}
         </Drawer>
 
-        <Box sx={{justifyContent:'center', minHeight: '80vh', p: 3, height: '100vh'}}>
-          <Typography variant="h4" component="h1" gutterBottom>
-          </Typography>
+        <Box sx={{ p: 3 }}>
           <Grid container spacing={3}>
             {recipes.map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} key={recipe.idMeal}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={recipe.strMealThumb}
-                    alt={recipe.strMeal}
-                  />
-                  <CardContent>
-                    <TextField
-                      fullWidth
-                      label="Nom de la recette"
-                      value={recipe.strMeal}
-                      onChange={(e) =>
-                        handleUpdateRecipe({ ...recipe, strMeal: e.target.value })
-                      }
-                      sx={{ mb: 2 }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Ingrédients"
-                      value={recipe.strIngredients}
-                      onChange={(e) =>
-                        handleUpdateRecipe({ ...recipe, strIngredients: e.target.value })
-                      }
-                      multiline
-                      rows={4}
-                      sx={{ mb: 2 }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Étapes de la recette"
-                      value={recipe.strInstructions}
-                      onChange={(e) =>
-                        handleUpdateRecipe({ ...recipe, strInstructions: e.target.value })
-                      }
-                      multiline
-                      rows={4}
-                      sx={{ mb: 2 }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="URL de l'image"
-                      value={recipe.strMealThumb}
-                      onChange={(e) =>
-                        handleUpdateRecipe({ ...recipe, strMealThumb: e.target.value })
-                      }
-                      sx={{ mb: 2 }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleUpdateRecipe(recipe)}
-                    >
-                      Mettre à jour
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <RecipeForm
+                key={recipe.idMeal}
+                recipe={recipe}
+                handleUpdateRecipe={handleUpdateRecipe}
+              />
             ))}
           </Grid>
         </Box>

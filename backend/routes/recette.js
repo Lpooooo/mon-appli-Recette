@@ -6,10 +6,21 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 // Charger les variables d'environnement
-dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 
+// Vérifier que les variables d'environnement sont chargées
+if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_DATABASE) {
+  console.error('Variables d\'environnement manquantes. Veuillez configurer le fichier .env');
+  process.exit(1);
+}
 
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
+});
 
 // Middleware d'authentification amélioré
 const authenticateToken = (req, res, next) => {

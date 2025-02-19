@@ -34,6 +34,7 @@ function RecetteForm({ open, onClose }) {
   const [photo, setPhoto] = useState('');
   const [message, setMessage] = useState('');
 
+  
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -77,7 +78,7 @@ const handleSubmit = async (event) => {
     setMessage('Tous les champs sont obligatoires.');
     return;
   }
-
+  
   const token = localStorage.getItem('token'); // Récupérer le token stocké
   if (!token) {
     setMessage('Vous devez être connecté pour créer une recette.');
@@ -92,24 +93,29 @@ const handleSubmit = async (event) => {
   };
 
   try {
-    await axios.post('http://localhost:3031/api/recette', newRecette, {
+    await axios.post('http://localhost:3030/api/recette', newRecette, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
     
+    const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
+    savedRecipes.push(newRecette);
+    localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
+
     setMessage('Recette créée avec succès');
     setTitle('');
     setIngredients('');
     setInstructions('');
     setPhoto('');
     onClose();
+    
   } catch (error) {
     if (error.response?.status === 401) {
       setMessage('Vous devez être connecté pour créer une recette');
     } else {
-      setMessage('Erreur lors de la création de la recette');
+      setMessage('Erreur lors de la création de la recette 401');
     }
     console.error('Erreur lors de la création de la recette:', error);
   }
@@ -218,7 +224,7 @@ export default function CreerRecette() {
           sx={{
             minHeight: '100vh',
             backgroundImage:
-              'url("https://media.istockphoto.com/id/2158116531/fr/photo/comptoir-de-cuisine-avec-ustensiles-et-espace-de-copie-mur-de-briques.jpg?s=2048x2048&w=is&k=20&c=axFyvtqoLNiCANND4PLWbIo2CuibaswN2tkHgnE1vEU=")',
+              'url("https://media.gettyimages.com/id/157612198/fr/photo/une-distribution-des-assiettes.jpg?s=1024x1024&w=gi&k=20&c=s-1umUBhADWccKB8jcinOdkJ6YdNbG8FXMXhdnLYuYM=")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
